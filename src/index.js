@@ -2,11 +2,12 @@ import React from 'react'
 import ReactDOM from 'react-dom';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.css';
-import { makeMainRoutes } from './routes';
+// import { makeMainRoutes } from './routes';
 import Client from 'aws-appsync'
 import { Rehydrated } from 'aws-appsync-react'
 import { ApolloProvider as Provider } from 'react-apollo'
 import App from './App'
+
 
 import config from './appsync'
 
@@ -23,14 +24,14 @@ const WithProvider = () => (
     <Provider client={client}>
         <Rehydrated>
             <App>
-                <Routes />
+
             </App>
         </Rehydrated>
     </Provider>
     
 )
 
-const Routes = makeMainRoutes();
+// const routes = makeMainRoutes();
 
 ReactDOM.render( <WithProvider/>,
 

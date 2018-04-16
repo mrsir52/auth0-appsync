@@ -1,6 +1,22 @@
+
+import { Redirect, Route, Router } from 'react-router-dom';
 import React, { Component } from 'react';
 import { Navbar, Button } from 'react-bootstrap';
 import './App.css';
+import history from "./history";
+import Home from './Home/Home';
+import Profile from './Profile/Profile';
+import Callback from './Callback/Callback';
+import Auth from './Auth/Auth';
+
+const auth = new Auth();
+
+const handleAuthentication = ({location}) => {
+    if (/access_token|id_token|error/.test(location.hash)) {
+        auth.handleAuthentication();
+    }
+}
+
 
 class App extends Component {
   goTo(route) {
@@ -17,7 +33,23 @@ class App extends Component {
 
   render() {
     const { isAuthenticated } = this.props.auth;
-
+      <Router history={history}>
+          <div>
+              <Route path="/" render={(props) => <App auth={auth} {...props} />} />
+              <Route path="/home" render={(props) => <Home auth={auth} {...props} />} />
+              <Route path="/profile" render={(props) => (
+                  !auth.isAuthenticated() ? (
+                      <Redirect to="/home"/>
+                  ) : (
+                      <Profile auth={auth} {...props} />
+                  )
+              )} />
+              <Route path="/callback" render={(props) => {
+                  handleAuthentication(props);
+                  return <Callback {...props} />
+              }}/>
+          </div>
+      </Router>
     return (
       <div>
         <Navbar fluid>
